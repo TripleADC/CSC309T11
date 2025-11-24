@@ -17,7 +17,7 @@ const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
  */
 export const AuthProvider = ({ children }) => {
     const navigate = useNavigate();
-    const [user, setUser] = useState();
+    const [user, setUser] = useState(null);
 
     useEffect(() => {
         // TODO: complete me, by retriving token from localStorage and make an api call to GET /user/me.
@@ -37,11 +37,12 @@ export const AuthProvider = ({ children }) => {
             await fetch(BACKEND_URL + "/user/me", {
                 method: "GET",
                 headers: {
-                    "Authorization": token,
+                    "Authorization": "Bearer " + token,
                     "Content-Type": "application/json"
                 }
             }).then(async (res) => {
                 const data = await res.json();
+                console.log(data);
 
                 if (res.ok) {
                     setUser(data.user);
@@ -98,7 +99,9 @@ export const AuthProvider = ({ children }) => {
 
             if (res.ok) 
             {
+
                 localStorage.setItem("token", data.token);
+                getUser();
                 navigate("/profile");
             } 
             else 
@@ -135,7 +138,7 @@ export const AuthProvider = ({ children }) => {
 
             if (res.ok)
             {
-                navigate("/");
+                navigate("/success");
                 return data.message;
             } 
             else 
