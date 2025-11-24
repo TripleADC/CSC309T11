@@ -83,25 +83,28 @@ export const AuthProvider = ({ children }) => {
     const login = async (username, password) => {
         // TODO: complete me
         try {
-            await fetch(BACKEND_URL + "/login", {
+            const res = await fetch(BACKEND_URL + "/login", {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
+                headers: { 
+                    "Content-Type": "application/json" 
                 },
-                body: JSON.stringify({
-                    username: username,
-                    password: password
+                body: JSON.stringify({ 
+                    username: username, 
+                    password: password 
                 })
-            })
-            .then(res => res.json())
-            .then(data => {
-                if (data.success) {
-                    localStorage.setItem("token", data.token);
-                    navigate("/profile");
-                } else {
-                    return data.message;
-                }
             });
+
+            const data = await res.json();
+
+            if (res.ok) 
+            {
+                localStorage.setItem("token", data.token);
+                navigate("/profile");
+            } 
+            else 
+            {
+                return data.message;
+            }
         } 
         catch (error) 
         {
@@ -120,22 +123,25 @@ export const AuthProvider = ({ children }) => {
         // TODO: complete me
 
         try {
-            await fetch(BACKEND_URL + "/register", {
+            const res = await fetch(BACKEND_URL + "/register", {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
+                headers: { 
+                    "Content-Type": "application/json" 
                 },
                 body: JSON.stringify(userData)
-            })
-            .then(res => res.json())
-            .then(data => {
-                if (data.success) {
-                    navigate("/");
-                    return data.message;
-                } else {
-                    return data.message;
-                }
             });
+
+            const data = await res.json();
+
+            if (res.ok)
+            {
+                navigate("/");
+                return data.message;
+            } 
+            else 
+            {
+                return data.message;
+            }
         } 
         catch (error) 
         {
