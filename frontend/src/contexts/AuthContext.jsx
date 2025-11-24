@@ -92,15 +92,13 @@ export const AuthProvider = ({ children }) => {
                     username: username,
                     password: password
                 })
-            }).then(async (res) => {
-                const data = await res.json();
-
-                if (res.ok) {
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
                     localStorage.setItem("token", data.token);
                     navigate("/profile");
-                } 
-                else 
-                {
+                } else {
                     return data.message;
                 }
             });
@@ -128,15 +126,13 @@ export const AuthProvider = ({ children }) => {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify(userData)
-            }).then(async (res) => {
-                const data = await res.json();
-
-                if (res.ok) {
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
                     navigate("/");
                     return data.message;
-                } 
-                else 
-                {
+                } else {
                     return data.message;
                 }
             });
